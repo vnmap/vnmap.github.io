@@ -1,0 +1,71 @@
+#place {
+    z-index: 9998;
+    height: 72px;
+    min-height: 10px;
+    position: absolute;
+    width: 384px;
+    bottom: 10px;
+    left:calc(50% - 192px);
+}
+
+#place > .placeicon {
+    height: 64px;
+    width: 96px;
+    margin: 4px;
+    position: absolute;
+    background-size: 96px 64px;
+}
+#place > .placeclose {
+    bottom: 3px;
+    right: 3px;
+    position: absolute;
+}
+
+#place > .placename {
+    font-size: 12px;
+    line-height: 12px;
+    height: 48px;
+    padding: 12px;
+    margin-left: 96px;
+    font-weight:bold;
+}
+
+#place > .placename:hover {
+    text-decoration: underline;
+}
+
+#place > .placelocation {
+    font-size: 12px;
+    line-height: 12px;
+    height: 24px;
+    margin-left: 108px;
+    font-weight:bold;
+    color: rgb(150, 150, 150);
+}
+#place > .placelocation:hover {
+    text-decoration: underline;
+}
+
+.slide-menu-logo{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 80px;
+    border-top: 1px solid #ececec;
+}
+.slide-menu-logo > .logo{
+    margin: 5px;
+    width: 70px;
+    height: 70px;
+    outline:none;
+}
+.slide-menu-logo > .logo:hover {
+    margin: 5px;
+    width: 70px;
+    border: 1px solid #ececec;
+}
+
+.voice-active {
+    background: #3f51b5 !important;
+    color: #fff !important;
+}
