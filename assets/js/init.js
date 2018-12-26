@@ -184,3 +184,6 @@ L.DomEvent.addListener(placelocation, 'click', clickPlaceDetail)
 $('#direction').on('click', () => {
     addWayPoint('start')
 })
+$('#detailclose').on('click', () => {
+    $('#detail').removeClass('detail-left')
+})

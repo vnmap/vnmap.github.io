@@ -1,11 +1,10 @@
 #detail {
-	margin: 0;
+	margin: 60px 0px 0px 10px;
 	padding: 0;
 	border: 0;
   vertical-align: baseline;
   z-index: 400;
-  min-height: 100%;
-  overflow: auto;
+  max-height: calc(100% - (60px + 30px));
 }
 * {
     -webkit-box-sizing: border-box;
@@ -88,7 +87,7 @@
   bottom: 0;
   color: #333;
   z-index: 400;
-  width: 370px;
+  width: 350px;
     -webkit-box-shadow: 3px 0px 7px 0px rgba(0,0,0,0.25);
     -moz-box-shadow: 3px 0px 7px 0px rgba(0,0,0,0.25);
     box-shadow: 3px 0px 7px 0px rgba(0,0,0,0.25);
@@ -136,22 +135,37 @@
 }
 .detail-menu>.detail-menu-here {
   padding: 0px 24px 20px;
+  max-height: 160px;
+  overflow: auto;
 }
 .detail-menu>.detail-menu-here >.detail-address-line {
   width: 100%;
+  padding: 5px;
+}
+.detail-menu >.detail-direction {
+  width: 100%;
+  padding: 10px 0px 0px 95px;
+}
+.detail-menu>.detail-menu-here >.detail-address-line:hover {
+  width: 100%;
+  background: #eee;
 }
 
 .detail-menu>.detail-menu-here >.detail-address-line>i {
   font-size: 20px;
   position: absolute;
-  left: 20px;
-  padding-top: 2px;
+  left: 30px;
+  padding-top: 1px;
   color: #3f51b5;
 }
 .detail-menu>.detail-menu-here >.detail-address-line>.address-line-detail {
   margin-left: 40px;
 }
-
+.detailclose {
+  position: absolute;
+  right: 5;
+  bottom: 5;
+}
 /* Slide Left  */
 .detail-left {
       -webkit-transform: translateX(0);

@@ -7,7 +7,8 @@ var MAP_MOVE_SETTIMEOUT
 var MOUSE_EVENT
 var AUDIO
 var PLACE_DETAIL
-
+var NO_PLACE_IMAGE = 'https://vantayden.github.io/assets/images/no_street.png'
+var NO_DETAIL_IMAGE = 'https://vantayden.github.io/assets/images/hoa-sen.jpg'
 
 function removeCurrentMarker() {
     if (currentMarker) {
@@ -62,6 +63,8 @@ function geocodePlace(name, cb) {
 function getPlacebyClick(lat, lng, cb) {
     reversePlace(lat, lng, (place) => {
         if (!place.error) {
+            console.log(1)
+            previewImages(place.osm_id)
             addCurrentMarker(lat, lng, place.display_name, place)
             playMarker(place.display_name)
         }
@@ -84,6 +87,7 @@ function addCurrentMarker(lat, lng, title, placeDetail) {
     L.DomUtil.removeClass(place, 'd-none')
     placename.innerHTML = name
     placelocation.innerHTML = lat.toFixed(7) + ', ' + lng.toFixed(7)
+    
 }
 
 function clickPlaceDetail() {
@@ -354,6 +358,7 @@ function detailAddress(result) {
     $('#state').html(state)
     $('#country').html(country)
     $('#display-name').html(result.display_name)
+    $('#display-location').html(`${result.lat}, ${result.lon}`)
     randomRating()
 
 }
@@ -380,7 +385,25 @@ function detailImages(id) {
     }
 }
 
-function pushImage(imageUrl = 'https://map.fimo.com.vn/assets/images/hoa-sen.jpg') {
+function previewImages(id) {
+    document.getElementById("preview-image").src = NO_PLACE_IMAGE
+    if (!id) {
+        document.getElementById("preview-image").src = NO_PLACE_IMAGE
+    } else {
+        $.getJSON(`/images/${id}`, (result) => {
+            if (result.success) {
+                document.getElementById("preview-image").src = 'data:image/png;base64,' + result.images[0]
+            } else {
+                document.getElementById("preview-image").src = NO_PLACE_IMAGE
+            }
+            delete result
+        }).fail(function () {
+            document.getElementById("preview-image").src = NO_PLACE_IMAGE
+        })
+    }
+}
+
+function pushImage(imageUrl = NO_DETAIL_IMAGE) {
     document.getElementById("detail-image").src = imageUrl
 }
 

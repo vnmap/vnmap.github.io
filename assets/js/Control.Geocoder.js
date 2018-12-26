@@ -249,7 +249,7 @@ this.L.Control.Geocoder = (function (L) {
         //   input;
         var className = 'leaflet-control-geocoder',
           container = L.DomUtil.create('div', 'mdl-color--white mdl-shadow--2dp'),
-          menuIcon = L.DomUtil.create('button', 'mdl-button mdl-js-button mdl-button--icon leaflet-control-geocoder-search-icon', container),
+          menuIcon = L.DomUtil.create('button', 'mdl-button mdl-js-button mdl-button--icon mdl-button--colored leaflet-control-geocoder-search-icon', container),
           dim = L.DomUtil.create('div', 'dim', container),
           form = (this._form = L.DomUtil.create('div', className + '-form', container)),
           routing = L.DomUtil.create('button', 'mdl-button mdl-js-button mdl-button--icon mdl-button--colored leaflet-control-geocoder-route-icon', container),
@@ -271,11 +271,11 @@ this.L.Control.Geocoder = (function (L) {
         this._changeRouteIcon(true)
         // icon.type = 'button';
 
+        var searchIcon = L.DomUtil.create('button', 'mdl-button mdl-js-button mdl-button--icon  mdl-button--colored leaflet-control-geocoder-search-icon', container);
+        searchIcon.innerHTML = '<i class="material-icons">search</i>';
         input = this._input = L.DomUtil.create('input', '', form);
         input.type = 'text';
         input.placeholder = this.options.placeholder;
-        var searchIcon = L.DomUtil.create('button', 'mdl-button mdl-js-button mdl-button--icon leaflet-control-geocoder-search-icon', container);
-        searchIcon.innerHTML = '<i class="material-icons">search</i>';
 
         this._errorElement = L.DomUtil.create('div', className + '-form-no-error', container);
         this._errorElement.innerHTML = this.options.errorMessage;
@@ -632,6 +632,7 @@ this.L.Control.Geocoder = (function (L) {
           document.getElementsByClassName('leaflet-routing-remove-waypoint')[0].click()
           document.getElementsByClassName('leaflet-routing-remove-waypoint')[1].click()
           $('.leaflet-control-geocoder-expanded').show()
+          initContextMenu(false)
         }
         this._routingGeocodersOpened = !this._routingGeocodersOpened
         this._clearMarker()
