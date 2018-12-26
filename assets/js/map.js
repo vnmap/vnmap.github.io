@@ -63,7 +63,6 @@ function geocodePlace(name, cb) {
 function getPlacebyClick(lat, lng, cb) {
     reversePlace(lat, lng, (place) => {
         if (!place.error) {
-            console.log(1)
             previewImages(place.osm_id)
             addCurrentMarker(lat, lng, place.display_name, place)
             playMarker(place.display_name)

@@ -84,7 +84,6 @@
     transition-property: transform;
   background: #fff;
   top:0;
-  bottom: 0;
   color: #333;
   z-index: 400;
   width: 350px;
@@ -145,6 +144,7 @@
 .detail-menu >.detail-direction {
   width: 100%;
   padding: 10px 0px 0px 95px;
+  margin-bottom: 10px;
 }
 .detail-menu>.detail-menu-here >.detail-address-line:hover {
   width: 100%;
