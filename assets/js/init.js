@@ -125,7 +125,8 @@ L.Control.zoomHome = L.Control.extend({
         //this._map.setView(latlng, maxZoom);
         map.locate({ setView: true, maxZoom: 18 })
         map.on('locationfound', function (location) {
-            addCurrentMarker(location.latlng.lat, location.latlng.lng, 'Vị trí hiện tại')
+            removeCurrentMarker()
+            getPlacebyClick(location.latlng.lat, location.latlng.lng)
         });
         map.on('locationerror', console.log);
     },
