@@ -49,7 +49,7 @@ function reversePlace(lat, lng, cb) {
 }
 
 function geocodePlace(name, cb) {
-    getJSON('/geocode/search', {
+    getJSON('/search', {
         q: name,
         format: 'json',
         limit: 1,
