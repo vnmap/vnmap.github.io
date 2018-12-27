@@ -86,7 +86,7 @@ function addCurrentMarker(lat, lng, title, placeDetail) {
     L.DomUtil.removeClass(place, 'd-none')
     placename.innerHTML = name
     placelocation.innerHTML = lat.toFixed(7) + ', ' + lng.toFixed(7)
-    
+
 }
 
 function clickPlaceDetail() {
@@ -138,8 +138,8 @@ function toggleExpand() {
 
 function getViewbox() {
     var viewboxPosition = findViewbox()
-
     checkValidPlace()
+    checkValidDir()
 
     if (!viewboxPosition) {
         return;
@@ -206,11 +206,8 @@ function moveMap() {
 }
 
 function changeUrl(newHREF, title) {
-    if (!title) {
-        title = document.title
-    } else {
-        title += ' - Bản đồ số Việt Nam'
-    }
+    title = !title ? document.title : title += ' - Bản đồ số Việt Nam'
+    newHREF = !newHREF ? location.pathname : newHREF
     document.title = title
     window.history.pushState({ urlPath: newHREF }, '', newHREF || location.href)
 }
@@ -248,6 +245,7 @@ function playMarker(name) {
 }
 
 function creatPlace(name) {
+    name = name.split('+').join('^')
     return name.split(' ').join('+')
 }
 
@@ -275,16 +273,19 @@ function getPlace() {
 function getPlaceName(firstname = false) {
     var place = getPlace()
     if (place) {
+        place = decodeURIComponent(place)
+        place = place.split('^').join('+')
         if (firstname)
-            return decodeURIComponent(place.split(',')[0])
+            return place.split(',')[0]
         else
-            return decodeURIComponent(place)
+            return place
     } else {
         return;
     }
 }
 
 function newPlace(name) {
+    clearDir()
     name.split('/').join(' ')
     var path = location.pathname.split('/')
     path.shift()
@@ -412,5 +413,97 @@ function toggleVoice() {
         L.DomUtil.removeClass(leftMenu, 'voice-active')
     } else {
         L.DomUtil.addClass(leftMenu, 'voice-active')
+    }
+}
+
+function addDir() {
+    clearPlace()
+    clearDir()
+    var path = location.pathname.split('/')
+    path.shift()
+    const waypoints = routingControl.getWaypoints()
+    for (let i = waypoints.length; i > 0; i--) {
+        if (waypoints[i - 1].latLng && waypoints[i - 1].latLng.lat && waypoints[i - 1].latLng.lng)
+            path.unshift(`${waypoints[i - 1].latLng.lat.toFixed(6)},${waypoints[i - 1].latLng.lng.toFixed(6)}`)
+    }
+    path.unshift('dir')
+    path.unshift('')
+    changeUrl(path.join('/'), '')
+}
+
+function clearDir() {
+    name.split('/').join(' ')
+    var path = location.pathname.split('/')
+    let waypoints = getDir()
+    if (waypoints) {
+        path.shift()
+        path.shift('dir')
+        waypoints.forEach(wp => {
+            path.shift(`${wp.lat},${wp.lng}`)
+        })
+        path.unshift('')
+        changeUrl(path.join('/'), name.split(',')[0])
+    }
+}
+
+function findDir() {
+    var path = location.pathname.split('/')
+    var dirPosition
+    path.forEach((item, index) => {
+        if (item == 'dir' && path[index + 1] && path[index + 1].split(',').length == 2 && path[index + 2] && path[index + 2].split(',').length == 2 && findViewbox() != index + 1) {
+            dirPosition = index
+        }
+    })
+    return dirPosition;
+}
+
+function getDir() {
+    var path = location.pathname.split('/')
+    var dirPosition = findDir()
+    let waypoints = []
+    if (dirPosition) {
+        path.forEach((p, index) => {
+            if (p && index >= dirPosition) {
+                let latLng = p.split(',')
+                if (latLng.length == 2 && parseFloat(latLng[0]) && parseFloat(latLng[1])) {
+                    waypoints.push({
+                        lat: parseFloat(latLng[0]).toFixed(6),
+                        lng: parseFloat(latLng[1]).toFixed(6)
+                    })
+                }
+            }
+        })
+        if (waypoints.length > 1)
+            return waypoints
+        else
+            return;
+    } else {
+        return;
+    }
+}
+
+function checkValidDir() {
+    var dirWaypoints = getDir()
+    let i = 0
+    if (dirWaypoints) {
+        dirWaypoints.forEach((wp, index) => {
+            reversePlace(wp.lat, wp.lng, (place) => {
+                if (index === 1)
+                    changeUrl('', place.display_name.split(',')[0])
+                let waypoints = routingControl.getWaypoints()
+                waypoints[index] = L.routing.waypoint([wp.lat, wp.lng], place.display_name)
+                routingControl.setWaypoints(waypoints)
+                i++
+            })
+        })
+        let startRoute = setInterval(() => {
+            if (i == dirWaypoints.length) {
+                if (!$('#icon_routing').hasClass('opened')) {
+                    geoCoding._direction()
+                }
+                routingControl.route()
+                clearInterval(startRoute)
+            }
+        }, 100)
     }
 }

@@ -6,17 +6,18 @@ var geoCoding = L.Control.geocoder({
         suggest: true,
     }),
 });
+
 var setView = getViewbox()
 if (setView) {
     DEFAULT_HOME = [setView.lat, setView.lon]
     DEFAULT_ZOOM = setView.z
 }
+// map.setView(DEFAULT_HOME, DEFAULT_ZOOM);
 /**
  * set geographical bounds visible: VietNam
  */
 var bounds = new L.LatLngBounds(new L.LatLng(0, 85), new L.LatLng(30, 130));
-var map = L.map('map', { zoomControl: false, attributionControl: true, maxBounds: bounds })
-    .setView(DEFAULT_HOME, DEFAULT_ZOOM);
+var map = L.map('map', { zoomControl: false, attributionControl: true, maxBounds: bounds }).setView(DEFAULT_HOME, DEFAULT_ZOOM);
 // end set bounds
 map.on('click', clickMap);
 map.on('contextmenu', (e) => {
@@ -187,4 +188,7 @@ $('#direction').on('click', () => {
 })
 $('#detailclose').on('click', () => {
     $('#detail').removeClass('detail-left')
+})
+$('#closeDirection').on('click', () => {
+    geoCoding._direction()
 })

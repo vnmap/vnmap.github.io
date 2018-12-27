@@ -409,7 +409,7 @@ this.L.Control.Geocoder = (function (L) {
         this._geocodeMarker = new L.Marker(result.center)
           .bindPopup(result.html || result.name)
           .addTo(this._map)
-          // .openPopup();
+        // .openPopup();
 
         return this;
       },
@@ -621,11 +621,13 @@ this.L.Control.Geocoder = (function (L) {
           L.DomUtil.removeClass(routingGeocoders, 'd-none');
           L.DomUtil.removeClass(routingAlternativesContainer, 'd-none');
           L.DomUtil.addClass(icon_routing, 'opened')
-          this._routing_tooltip.innerHTML = 'Đóng chỉ đường';
+          // if (this._routing_tooltip)
+          //   this._routing_tooltip.innerHTML = 'Đóng chỉ đường';
           $('.leaflet-control-geocoder-expanded').hide()
           $('#detail').removeClass('detail-left')
         } else {
-          this._routing_tooltip.innerHTML = 'Chỉ đường';
+          // if (this._routing_tooltip)
+          //   this._routing_tooltip.innerHTML = 'Chỉ đường';
           L.DomUtil.addClass(routingGeocoders, 'd-none')
           L.DomUtil.addClass(routingAlternativesContainer, 'd-none');
           L.DomUtil.removeClass(icon_routing, 'opened');
@@ -635,7 +637,8 @@ this.L.Control.Geocoder = (function (L) {
           initContextMenu(false)
         }
         this._routingGeocodersOpened = !this._routingGeocodersOpened
-        this._clearMarker()
+        if (this._clearMarker)
+          this._clearMarker()
       },
       _changeRouteIcon(routing) {
         if (routing) {

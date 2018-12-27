@@ -15944,6 +15944,7 @@ module.exports={
 
 			this._map = map;
 			this._map.addLayer(this._plan);
+			
 
 			this._map.on('zoomend', this._onZoomEnd, this);
 
@@ -16197,6 +16198,7 @@ module.exports={
 							var selectedRoute = routes.splice(0,1)[0];
 							this._routeSelected({route: selectedRoute, alternatives: routes});
 						}
+						addDir();
 					}
 				}, this, options);
 			}
@@ -18520,9 +18522,8 @@ module.exports = L.Routing = {
 			closeDirectionTooltip.innerHTML = "Tìm kiếm địa điểm";
 			this.closeDirection = closeDirection;
 			//Đóng chỉ đường
-			L.DomEvent.addListener(closeDirection, 'click', function () {
-				geoCoding._direction()
-			}, this);
+			// L.DomEvent.removeListener(closeDirection, 'click', geoCoding._direction, this);
+			// L.DomEvent.addListener(closeDirection, 'click', geoCoding._direction, this);
 
 			if (this.options.addWaypoints) {
 				// addWpBtn = L.DomUtil.create('button', 'mdl-button mdl-js-button ' + this.options.addButtonClassName, container);
