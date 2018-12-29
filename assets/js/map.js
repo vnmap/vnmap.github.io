@@ -511,13 +511,17 @@ function checkValidDir() {
 }
 
 function handlePlace(place, lat, lng) {
-    place.display_name = place.display_name.split('Trung Hoa').join('')
-    place.display_name = place.display_name.split('Trung Quốc').join('')
-    place.display_name = place.display_name.split('China').join('')
-    place.display_name = place.display_name.split('Đài Loan').join('')
-    place.display_name = place.display_name.split('Taiwan').join('')
-    if (place.display_name.indexOf('Hoàng Sa') < 0 || (checkInBBox(lat, lng, HOANG_SA_BBOX) && place.display_name.indexOf('Hoàng Sa') > 0)) {
-        return place
+    if (place && place.display_name) {
+        place.display_name = place.display_name.split('Trung Hoa').join('')
+        place.display_name = place.display_name.split('Trung Quốc').join('')
+        place.display_name = place.display_name.split('China').join('')
+        place.display_name = place.display_name.split('Đài Loan').join('')
+        place.display_name = place.display_name.split('Taiwan').join('')
+        if (place.display_name.indexOf('Hoàng Sa') < 0 || (checkInBBox(lat, lng, HOANG_SA_BBOX) && place.display_name.indexOf('Hoàng Sa') > 0)) {
+            return place
+        } else {
+            return
+        }
     } else {
         return
     }
