@@ -42,9 +42,11 @@ function reversePlace(lat, lng, cb) {
         lon: lng,
         format: 'json',
         addressdetails: 1,
-        namedetails: 1
+        namedetails: 1,
     }, (place) => {
-        cb(place)
+        place = handlePlace(place, lat, lng)
+        if (place)
+            cb(place)
     })
 }
 
@@ -507,3 +509,22 @@ function checkValidDir() {
         }, 100)
     }
 }
+
+function handlePlace(place, lat, lng) {
+    place.display_name = place.display_name.split('Trung Hoa').join('')
+    place.display_name = place.display_name.split('Trung Quốc').join('')
+    place.display_name = place.display_name.split('China').join('')
+    place.display_name = place.display_name.split('Đài Loan').join('')
+    place.display_name = place.display_name.split('Taiwan').join('')
+    if (checkInBBox(lat, lng, HOANG_SA_BBOX)) {
+        return place
+    } else {
+        return
+    }
+}
+
+function checkInBBox(lat, lng, bbox) {
+    return (lat > bbox.lat[0] && lat < bbox.lat[1] && lng > bbox.lng[0] && lng < bbox.lng[1])
+}
+
+const HOANG_SA_BBOX = { lng: [111, 118], lat: [7.6, 18.1] }
