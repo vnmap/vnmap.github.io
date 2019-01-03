@@ -7,8 +7,8 @@ var MAP_MOVE_SETTIMEOUT
 var MOUSE_EVENT
 var AUDIO
 var PLACE_DETAIL
-var NO_PLACE_IMAGE = 'https://phuonghx.github.io/assets/images/no_street.png'
-var NO_DETAIL_IMAGE = 'https://phuonghx.github.io/assets/images/hoa-sen.jpg'
+var NO_PLACE_IMAGE = 'https://map.fimo.com.vn/assets/images/no_street.png'
+var NO_DETAIL_IMAGE = 'https://map.fimo.com.vn/assets/images/hoa-sen.jpg'
 var XHR_REVERSE 
 
 function removeCurrentMarker() {
