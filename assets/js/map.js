@@ -7,8 +7,9 @@ var MAP_MOVE_SETTIMEOUT
 var MOUSE_EVENT
 var AUDIO
 var PLACE_DETAIL
-var NO_PLACE_IMAGE = 'https://vantayden.github.io/assets/images/no_street.png'
-var NO_DETAIL_IMAGE = 'https://vantayden.github.io/assets/images/hoa-sen.jpg'
+var NO_PLACE_IMAGE = 'https://phuonghx.github.io/assets/images/no_street.png'
+var NO_DETAIL_IMAGE = 'https://phuonghx.github.io/assets/images/hoa-sen.jpg'
+var XHR_REVERSE 
 
 function removeCurrentMarker() {
     if (currentMarker) {
@@ -19,8 +20,12 @@ function removeCurrentMarker() {
     }
 }
 
-function getJSON(url, params, callback) {
+function getJSON(url, params, callback, auto_cancel = false) {
     var xmlHttp = new XMLHttpRequest();
+    if(auto_cancel && XHR_REVERSE){
+        XHR_REVERSE.abort()
+        XHR_REVERSE = xmlHttp
+    }
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState !== 4) {
             return;
@@ -47,7 +52,7 @@ function reversePlace(lat, lng, cb) {
         place = handlePlace(place, lat, lng)
         if (place)
             cb(place)
-    })
+    }, true)
 }
 
 function geocodePlace(name, cb) {
@@ -73,6 +78,7 @@ function getPlacebyClick(lat, lng, cb) {
 }
 
 function addCurrentMarker(lat, lng, title, placeDetail) {
+    removeCurrentMarker()
     PLACE_DETAIL = placeDetail
     currentMarker = L.marker([lat, lng], {
         icon: L.icon({
@@ -86,9 +92,10 @@ function addCurrentMarker(lat, lng, title, placeDetail) {
     var name = split.join(', ')
     var place = L.DomUtil.get('place')
     L.DomUtil.removeClass(place, 'd-none')
+    if (placeDetail && placeDetail.address && placeDetail.address.postcode)
+        name = name.replace(`, ${placeDetail.address.postcode}`, '')
     placename.innerHTML = name
     placelocation.innerHTML = lat.toFixed(7) + ', ' + lng.toFixed(7)
-
 }
 
 function clickPlaceDetail() {
@@ -359,6 +366,8 @@ function detailAddress(result) {
     $('#county').html(county)
     $('#state').html(state)
     $('#country').html(country)
+    if (result && result.address && result.address.postcode)
+        result.display_name = result.display_name.replace(`, ${result.address.postcode}`, '')
     $('#display-name').html(result.display_name)
     $('#display-location').html(`${result.lat}, ${result.lon}`)
     randomRating()
