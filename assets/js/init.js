@@ -30,7 +30,7 @@ map.on('load', moveMap);
 var layers = {
     Streets: L.tileLayer(' https://map.itrithuc.vn/tiles/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://map.itrithuc.vn/">VNMap</a> - Bản đồ số Việt Nam',
-        maxZoom: 19,
+        maxZoom: 18,
     }),
     //- Outdoors: L.mapbox.tileLayer('mapbox.outdoors'),
     //- Satellite: L.mapbox.tileLayer('mapbox.satellite')
